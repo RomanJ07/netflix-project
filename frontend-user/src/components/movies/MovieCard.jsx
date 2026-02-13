@@ -1,4 +1,6 @@
 import Button from "../common/Button";
+import MovieDescription from "./MovieDescription";
+import { useState } from "react";
 
 const genreColors = {
   Action: "bg-red-500",
@@ -10,6 +12,12 @@ const genreColors = {
 };
 function MovieCard({ movie }) {
   const genreColor = genreColors[movie.genre] || "bg-gray-600";
+  const [isLiked, setIsLiked] = useState(false);
+  const [likes, setLikes] = useState(0);
+  const handleLike = () => {
+    setIsLiked(!isLiked);
+    setLikes(isLiked ? likes - 1 : likes + 1);
+  };
   return (
     <div
       className="group relative overflow-hidden rounded-lg cursor-pointer
@@ -43,6 +51,9 @@ py-1 rounded"
       {/* Overlay au hover */}{" "}
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
         <h3 className="text-xl font-bold mb-2">{movie.title}</h3>
+        <button className={`px-4 py-2 rounded ${ isLiked ? 'bg-red-500' : 'bg-gray-500' } text-white`} onClick={handleLike}>
+          {isLiked ? '❤' : '🤍'} {likes} likes
+        </button>
 
         <div className="flex items-center space-x-3 mb-3 text-sm">
           <span className="text-green-400 fontsemibold">{movie.rating}/10</span>
@@ -50,9 +61,7 @@ py-1 rounded"
           <span className="text-gray-400">{movie.duration}min</span>
         </div>
 
-        <p className="text-sm text-gray-300 mb-4 line-clamp-2">
-          {movie.description}
-        </p>
+        <MovieDescription description={movie.description} />
 
         <div className="flex flex-col sm:flex-row gap-2">
           <Button size="sm" className="flex-1">
