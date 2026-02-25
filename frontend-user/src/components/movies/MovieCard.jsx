@@ -10,7 +10,7 @@ const genreColors = {
   Horreur: "bg-orange-500",
   Thriller: "bg-gray-500",
 };
-function MovieCard({ movie }) {
+function MovieCard({ movie, onAddToCart }) {
   const genreColor = genreColors[movie.genre] || "bg-gray-600";
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(0);
@@ -64,7 +64,7 @@ py-1 rounded"
         <MovieDescription description={movie.description} />
 
         <div className="flex flex-col sm:flex-row gap-2">
-          <Button size="sm" className="flex-1">
+          <Button size="sm" className="flex-1" onClick={() => onAddToCart && onAddToCart(movie)}>
             ▶ Louer {movie.price}€
           </Button>
           <Button variant="outline" size="sm" className="flex-1">

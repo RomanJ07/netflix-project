@@ -11,7 +11,8 @@ function Home() {
   const heroMovie = moviesData[0];
   const [allMovies] = useState(moviesData);
   const [filteredMovies, setFilteredMovies] = useState(moviesData);
-
+  // Panier global
+  const [cartItems, setCartItems] = useState([]);
 
   // 5 films populaires au hasard
   const getRandomMovies = (movies, count) => {
@@ -28,16 +29,25 @@ function Home() {
   // Films récents (après 2010)
   const recentMovies = moviesData.filter((movie) => movie.year > 2010);
 
+  // Ajout au panier
+  const handleAddToCart = (movie) => {
+    setCartItems((prev) => prev.find((m) => m.id === movie.id) ? prev : [...prev, movie]);
+  };
+  // Suppression du panier
+  const handleRemoveFromCart = (id) => {
+    setCartItems((prev) => prev.filter((m) => m.id !== id));
+  };
+
   return (
     <div className="min-h-screen bg-black text-white">
-      <Navbar />
-      <MovieHero movie={heroMovie} />
+      <Navbar cartItems={cartItems} onRemoveFromCart={handleRemoveFromCart} />
+      <MovieHero movie={heroMovie} onAddToCart={handleAddToCart} />
       <div className="container mx-auto">
         <MovieFilter movies={allMovies} onFilter={setFilteredMovies} />
-        <MovieList title="Films disponibles" movies={filteredMovies} />
-        <MovieList title="Films populaires" movies={popularMovies} />
-        <MovieList title="Science-Fiction" movies={sciFiMovies} />
-        <MovieList title="Films récents" movies={recentMovies} />
+        <MovieList title="Films disponibles" movies={filteredMovies} onAddToCart={handleAddToCart} />
+        <MovieList title="Films populaires" movies={popularMovies} onAddToCart={handleAddToCart} />
+        <MovieList title="Science-Fiction" movies={sciFiMovies} onAddToCart={handleAddToCart} />
+        <MovieList title="Films récents" movies={recentMovies} onAddToCart={handleAddToCart} />
       </div>
       <Footer />
     </div>

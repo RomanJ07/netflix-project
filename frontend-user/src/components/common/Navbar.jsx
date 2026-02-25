@@ -1,7 +1,8 @@
 import { useState } from "react";
 import SearchBar from "../movies/SearchBar";
+import CartButton from "./CartButton";
 import moviesData from "../../../../data/movies.json";
-function Navbar() {
+function Navbar({ cartItems, onRemoveFromCart }) {
   const [isScrolled] = useState(false);
   // Note : useEffect sera vu au TP 03
   // Pour l'instant, version statique
@@ -43,10 +44,10 @@ ${isScrolled ? "bg-black" : "bg-gradient-to-b from-black/80 to-transparent"}`}
               movies={moviesData}
               onSearch={(movie) => console.log("Film sélectionné :", movie)}
             />
+            <CartButton cartItems={cartItems} onRemoveFromCart={onRemoveFromCart} />
             {/* User Avatar */}
             <div
-              className="w-8 h-8 bg-primary rounded flex items-center
-justify-center cursor-pointer hover:bg-primary-dark transition-colors"
+              className="w-8 h-8 bg-primary rounded flex items-center justify-center cursor-pointer hover:bg-primary-dark transition-colors"
             >
               <span className="text-sm font-bold">U</span>
             </div>
