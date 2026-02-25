@@ -1,5 +1,6 @@
 import { useState } from "react";
-import SearchBar from "./SearchBar";
+import SearchBar from "../movies/SearchBar";
+import moviesData from "../../../../data/movies.json";
 function Navbar() {
   const [isScrolled] = useState(false);
   // Note : useEffect sera vu au TP 03
@@ -38,7 +39,10 @@ ${isScrolled ? "bg-black" : "bg-gradient-to-b from-black/80 to-transparent"}`}
           </div>
           {/* User Section */}
           <div className="flex items-center space-x-4">
-            <SearchBar />
+            <SearchBar
+              movies={moviesData}
+              onSearch={(movie) => console.log("Film sélectionné :", movie)}
+            />
             {/* User Avatar */}
             <div
               className="w-8 h-8 bg-primary rounded flex items-center

@@ -1,4 +1,6 @@
 import MovieHero from "../components/movies/MovieHero";
+import {useState} from "react";
+import MovieFilter from "../components/movies/MovieFilter";
 import MovieList from "../components/movies/MovieList";
 import Navbar from "../components/common/Navbar";
 import Footer from "../components/layout/Footer";
@@ -7,6 +9,9 @@ import moviesData from "../../../data/movies.json";
 function Home() {
   // Le premier film pour le Hero
   const heroMovie = moviesData[0];
+  const [allMovies] = useState(moviesData);
+  const [filteredMovies, setFilteredMovies] = useState(moviesData);
+
 
   // 5 films populaires au hasard
   const getRandomMovies = (movies, count) => {
@@ -28,6 +33,8 @@ function Home() {
       <Navbar />
       <MovieHero movie={heroMovie} />
       <div className="container mx-auto">
+        <MovieFilter movies={allMovies} onFilter={setFilteredMovies} />
+        <MovieList title="Films disponibles" movies={filteredMovies} />
         <MovieList title="Films populaires" movies={popularMovies} />
         <MovieList title="Science-Fiction" movies={sciFiMovies} />
         <MovieList title="Films récents" movies={recentMovies} />
