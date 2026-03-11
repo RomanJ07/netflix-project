@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/database.js";
 import mongoose from "mongoose";
+import movieRoutes from "./routes/movie.routes.js";
 // Charger les variables d'environnement
 dotenv.config();
 // Initialiser Express
@@ -48,11 +49,8 @@ app.get("/api/health", (req, res) => {
       mongoose.connection.readyState === 1 ? "connected" : "disconnected",
   });
 });
-// TODO: Importer et utiliser les routes - Prochaine séance si vous n’êtes pas trop lent ☺
-// import movieRoutes from './routes/movie.routes.js';
-// import authRoutes from './routes/auth.routes.js';
-// import rentalRoutes from './routes/rental.routes.js';
-// app.use('/api/movies', movieRoutes);
+// Routes API
+app.use("/api/movies", movieRoutes);
 // app.use('/api/auth', authRoutes);
 // app.use('/api/rentals', rentalRoutes);
 // Gestion des erreurs 404
@@ -116,4 +114,5 @@ process.on("uncaughtException", (err) => {
   console.error("❌ Uncaught Exception:", err);
   process.exit(1);
 });
+
 export default app;
