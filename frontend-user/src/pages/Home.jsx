@@ -32,6 +32,18 @@ function Home() {
   // Ajout au panier
   const handleAddToCart = (movie) => {
     setCartItems((prev) => prev.find((m) => m.id === movie.id) ? prev : [...prev, movie]);
+
+    const storedRentals = JSON.parse(localStorage.getItem("rentals") || "[]");
+    const alreadyRented = storedRentals.some((rental) => rental.id === movie.id);
+
+    if (!alreadyRented) {
+      const rental = {
+        ...movie,
+        rentalDate: new Date().toISOString(),
+        expiryDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      };
+      localStorage.setItem("rentals", JSON.stringify([...storedRentals, rental]));
+    }
   };
   // Suppression du panier
   const handleRemoveFromCart = (id) => {

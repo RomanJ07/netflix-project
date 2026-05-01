@@ -1,6 +1,7 @@
 import Button from "../common/Button";
 import MovieDescription from "./MovieDescription";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const genreColors = {
   Action: "bg-red-500",
@@ -12,16 +13,34 @@ const genreColors = {
 };
 function MovieCard({ movie, onAddToCart }) {
   const genreColor = genreColors[movie.genre] || "bg-gray-600";
+  const navigate = useNavigate();
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(0);
-  const handleLike = () => {
+  const handleLike = (e) => {
+    e.stopPropagation();
     setIsLiked(!isLiked);
     setLikes(isLiked ? likes - 1 : likes + 1);
   };
+
+  const handleCardClick = () => {
+    navigate(`/movie/${movie.id}`);
+  };
+
+  const handleRent = (e) => {
+    e.stopPropagation();
+    onAddToCart && onAddToCart(movie);
+  };
+
+  const handleMoreInfo = (e) => {
+    e.stopPropagation();
+    navigate(`/movie/${movie.id}`);
+  };
+
   return (
     <div
       className="group relative overflow-hidden rounded-lg cursor-pointer
 transition-transform duration-300 hover:scale-105"
+      onClick={handleCardClick}
     >
       {/* Image principale */}
       <div className="relative aspect-[2/3]">
@@ -64,10 +83,10 @@ py-1 rounded"
         <MovieDescription description={movie.description} />
 
         <div className="flex flex-col sm:flex-row gap-2">
-          <Button size="sm" className="flex-1" onClick={() => onAddToCart && onAddToCart(movie)}>
+          <Button size="sm" className="flex-1" onClick={handleRent}>
             ▶ Louer {movie.price}€
           </Button>
-          <Button variant="outline" size="sm" className="flex-1">
+          <Button variant="outline" size="sm" className="flex-1" onClick={handleMoreInfo}>
             + Info
           </Button>
         </div>
